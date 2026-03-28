@@ -7,34 +7,43 @@ using UnityEngine.InputSystem;
 public class PlayerMover : MonoBehaviour
 {
     private const float SPEED_COEFFICIENT = 50;
+    //private const string HorizontalxAxis = "Horizontal";
     private bool _isMovingLeft = false;
     private bool _isMovingRight = false;
+    private bool _isJump = false;
 
     [SerializeField] private float _speedX = 2; // [SerializeField]  делает переменную видимой для inspector Unity при этом делая ее приватной
+    [SerializeField] private float _jumpForce = 5;
 
-
-    private Rigidbody2D rb;
+    private Rigidbody2D rbody;
+    //private float _direction;
 
     private void Start()
     {
-        rb = GetComponent<Rigidbody2D>();            // Получить rigidbody
-        //  rb.linearVelocity = new Vector2(-1,0)      присвоение скорости
+        rbody = GetComponent<Rigidbody2D>();            // Получить rigidbody
+
     }
 
     private void FixedUpdate()                                 // вызывает метод "каждый кадр" 50 раз в секунду
     {
         if (_isMovingRight)
         {
-            rb.linearVelocity = new Vector2(_speedX * SPEED_COEFFICIENT * Time.fixedDeltaTime, rb.linearVelocity.y);
+            rbody.linearVelocity = new Vector2(_speedX * SPEED_COEFFICIENT * Time.fixedDeltaTime, rbody.linearVelocity.y);
         }
-        else if(_isMovingLeft)
-            rb.linearVelocity = new Vector2(-_speedX * SPEED_COEFFICIENT * Time.fixedDeltaTime, rb.linearVelocity.y);
-        
+        else if (_isMovingLeft)
+            rbody.linearVelocity = new Vector2(-_speedX * SPEED_COEFFICIENT * Time.fixedDeltaTime, rbody.linearVelocity.y);
 
+        if (_isJump)
+        {
+            rbody.AddForce(new Vector2(0, _jumpForce));
+        }
+        
     }
 
     private void Update()
     {
+        //_direction = Input.GetAxis(HorizontalxAxis);  \\ старый стиль
+
 
         if (Keyboard.current.aKey.wasPressedThisFrame)
         {
@@ -55,6 +64,17 @@ public class PlayerMover : MonoBehaviour
         {
             _isMovingRight = false;
         }
+        if (Keyboard.current.wKey.wasPressedThisFrame)
+        {
+            _isJump=true;
+        }
+        if (Keyboard.current.wKey.wasReleasedThisFrame)
+        {
+            _isJump=false;
+
+        }
+
+
 
     }
 }

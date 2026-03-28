@@ -253,6 +253,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NewMonoBehaviourScript
   _speedX: 1
+  _jumpForce: 50
 --- !u!70 &214263752
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
