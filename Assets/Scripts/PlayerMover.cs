@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -11,9 +12,11 @@ public class PlayerMover : MonoBehaviour
     private bool _isMovingLeft = false;
     private bool _isMovingRight = false;
     private bool _isJump = false;
+    private bool _isGround = false;
+    private const string GROUND_TAG = "Ground";
 
     [SerializeField] private float _speedX = 2; // [SerializeField]  делает переменную видимой для inspector Unity при этом делая ее приватной
-    [SerializeField] private float _jumpForce = 5;
+    [SerializeField] private float _jumpForce = 50;
 
     private Rigidbody2D rbody;
     //private float _direction;
@@ -33,9 +36,11 @@ public class PlayerMover : MonoBehaviour
         else if (_isMovingLeft)
             rbody.linearVelocity = new Vector2(-_speedX * SPEED_COEFFICIENT * Time.fixedDeltaTime, rbody.linearVelocity.y);
 
-        if (_isJump)
+        if (_isJump && _isGround)
         {
             rbody.AddForce(new Vector2(0, _jumpForce));
+            _isJump = false;
+            _isGround = false;
         }
         
     }
@@ -68,7 +73,7 @@ public class PlayerMover : MonoBehaviour
         {
             _isJump=true;
         }
-        if (Keyboard.current.wKey.wasReleasedThisFrame)
+        if (_isGround && Keyboard.current.wKey.wasReleasedThisFrame)
         {
             _isJump=false;
 
@@ -76,6 +81,14 @@ public class PlayerMover : MonoBehaviour
 
 
 
+    }
+
+    
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        
+        if (collision.gameObject.CompareTag(GROUND_TAG)) _isGround = true;
     }
 }
 

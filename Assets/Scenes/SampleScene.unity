@@ -252,8 +252,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc22b856de522ac49ace74d2a3997ea3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NewMonoBehaviourScript
-  _speedX: 1
-  _jumpForce: 50
+  _speedX: 3
+  _jumpForce: 500
 --- !u!70 &214263752
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -304,7 +304,7 @@ GameObject:
   - component: {fileID: 281149263}
   m_Layer: 0
   m_Name: Square
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
