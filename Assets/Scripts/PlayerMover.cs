@@ -15,7 +15,7 @@ public class PlayerMover : MonoBehaviour
     private bool _isGround = false;
     private const string GROUND_TAG = "Ground";
 
-    [SerializeField] private float _speedX = 2; // [SerializeField]  делает переменную видимой для inspector Unity при этом делая ее приватной
+    [SerializeField] private float _speedX = 1; // [SerializeField]  делает переменную видимой для inspector Unity при этом делая ее приватной
     [SerializeField] private float _jumpForce = 50;
 
     private Rigidbody2D rbody;
@@ -31,10 +31,10 @@ public class PlayerMover : MonoBehaviour
     {
         if (_isMovingRight)
         {
-            rbody.linearVelocity = new Vector2(_speedX * SPEED_COEFFICIENT * Time.fixedDeltaTime, rbody.linearVelocity.y);
+            rbody.linearVelocity = new Vector2(_speedX, rbody.linearVelocity.y);
         }
         else if (_isMovingLeft)
-            rbody.linearVelocity = new Vector2(-_speedX * SPEED_COEFFICIENT * Time.fixedDeltaTime, rbody.linearVelocity.y);
+            rbody.linearVelocity = new Vector2(-_speedX, rbody.linearVelocity.y);
 
         if (_isJump && _isGround)
         {
@@ -69,11 +69,11 @@ public class PlayerMover : MonoBehaviour
         {
             _isMovingRight = false;
         }
-        if (Keyboard.current.wKey.wasPressedThisFrame)
+        if (_isGround && Keyboard.current.spaceKey.wasPressedThisFrame)
         {
             _isJump=true;
         }
-        if (_isGround && Keyboard.current.wKey.wasReleasedThisFrame)
+        if (_isGround && Keyboard.current.spaceKey.wasReleasedThisFrame)
         {
             _isJump=false;
 
